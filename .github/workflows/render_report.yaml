@@ -34,7 +34,7 @@ jobs:
           rmarkdown::render("report.Rmd")
         shell: Rscript {0}
 
-      - uses: EndBug/add-and-commit@v9:
+      - uses: EndBug/add-and-commit@v9
           add: 'report.html'
           author_name: 'Github Actions'
           author_email: 'actions@github.com'
