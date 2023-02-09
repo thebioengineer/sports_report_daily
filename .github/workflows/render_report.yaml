@@ -38,6 +38,7 @@ jobs:
 
       - name: Commit report to ghpages branch
         run: |
+          git fetch
           git checkout ghpages
           git add report.html
           git commit -m "update report"
