@@ -1,0 +1,200 @@
+---
+title: "`r paste0('NCAA MBB Recruiting Report - ', Sys.Date())`"
+author: "TidyX"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+library(DT)
+library(rvest)
+
+cbb_stats_url <- "https://www.espn.com/mens-college-basketball/stats/player"
+
+cbb_stats_html <- rvest::read_html(cbb_stats_url) 
+
+cbb_stats_tables <- cbb_stats_html %>% 
+  rvest::html_table() %>% 
+  bind_cols() %>% 
+  mutate(
+    Name_Sub_string = str_remove(Name, "[A-Z]*$"),
+    Team = map2_chr(Name, Name_Sub_string, ~.x %>% str_remove(.y))
+  ) %>% 
+  select(
+    -Name
+  ) %>% 
+  rename(
+    Name = Name_Sub_string
+  ) %>% 
+  relocate(
+    Name, .after = RK
+  )
+
+
+```
+
+Offensive Output
+=======================================================================
+
+Column {data-width=40}
+-----------------------------------------------------------------------
+
+### Top 10 Point Scorers Per Game
+
+```{r top-10-Scorers}
+
+cbb_stats_tables %>% 
+  arrange(desc(PTS)) %>% 
+  slice(1:10) %>% 
+  mutate(
+    Name = map_chr(Name, ~ .x %>% strwrap(5) %>% paste0(collapse = "\n")), # wrap 
+    Name = factor(Name, levels = unique(Name)) ## Preserve order of names
+  ) %>% 
+  ggplot() + 
+  aes(x = Name, y = PTS) + 
+  geom_col(aes(fill = POS)) +
+  labs(
+    title = "Top 10 Points Scorers",
+    subtitle = "Data Scraped from ESPN",
+    x = NULL,
+    y = "Points Per Game"
+  ) + 
+  theme_bw()
+
+
+```
+
+
+### Top 10 3 Point Percentage
+
+```{r top-10-3-point-avg}
+
+cbb_stats_tables %>% 
+  arrange(desc(`3P%`)) %>% 
+  slice(1:10) %>% 
+  mutate(
+    Name = map_chr(Name, ~ .x %>% strwrap(5) %>% paste0(collapse = "\n")), # wrap 
+    Name = factor(Name, levels = unique(Name)) ## Preserve order of names
+  ) %>% 
+  ggplot() + 
+  aes(x = Name, y = `3P%`) + 
+  geom_col(aes(fill = POS)) +
+  labs(
+    title = "Top 10 3 Point Shooting %",
+    subtitle = "Data Scraped from ESPN",
+    x = NULL,
+    y = "3 Pt Shooting %"
+  ) + 
+  theme_bw()
+
+
+```
+
+
+Column {data-width=60}
+-----------------------------------------------------------------------
+
+### Offensive Statistics
+
+```{r offense-data-table}
+
+cbb_stats_tables %>% 
+  select(
+    RK, Name, Team, POS, PTS:`FT%`
+  ) %>% 
+  datatable(
+    rownames = FALSE
+  )
+
+```
+
+
+Defensive Output
+=======================================================================
+
+Column {data-width=40}
+-----------------------------------------------------------------------
+
+### Top 10 Rebounds Per Game
+
+```{r top-10-Rebounders}
+
+cbb_stats_tables %>% 
+  arrange(desc(REB)) %>% 
+  slice(1:10) %>% 
+  mutate(
+    Name = map_chr(Name, ~ .x %>% strwrap(5) %>% paste0(collapse = "\n")), # wrap 
+    Name = factor(Name, levels = unique(Name)) ## Preserve order of names
+  ) %>% 
+  ggplot() + 
+  aes(x = Name, y = REB) + 
+  geom_col(aes(fill = POS)) +
+  labs(
+    title = "Top 10 Rebounbers",
+    subtitle = "Data Scraped from ESPN",
+    x = NULL,
+    y = "Rebounds Per Game"
+  ) + 
+  theme_bw()
+
+
+```
+
+
+### Top 10 Blockers
+
+```{r top-10-blocks}
+
+cbb_stats_tables %>% 
+  arrange(desc(BLK)) %>% 
+  slice(1:10) %>% 
+  mutate(
+    Name = map_chr(Name, ~ .x %>% strwrap(5) %>% paste0(collapse = "\n")), # wrap 
+    Name = factor(Name, levels = unique(Name)) ## Preserve order of names
+  ) %>% 
+  ggplot() + 
+  aes(x = Name, y = BLK) + 
+  geom_col(aes(fill = POS)) +
+  labs(
+    title = "Top 10 Blockers Per Game",
+    subtitle = "Data Scraped from ESPN",
+    x = NULL,
+    y = "Blocks Per Game"
+  ) + 
+  theme_bw()
+
+
+```
+
+
+Column {data-width=60}
+-----------------------------------------------------------------------
+
+### Defensive Statistics
+
+```{r defense-data-table}
+
+cbb_stats_tables %>% 
+  select(
+    RK, Name, Team, POS, REB:TO
+  ) %>% 
+  datatable(
+    rownames = FALSE
+  )
+
+```
+
+
+
+
+
+
