@@ -35,17 +35,13 @@ jobs:
         run: |
           rmarkdown::render("report.Rmd")
         shell: Rscript {0}
-        
-      - name: setup git config
-        run: |
-          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
 
       - name: Commit report to ghpages branch
         run: |
-          git fetch
           git checkout ghpages
           git add report.html
           git commit -m "update report"
-          git push origin
+
+      - uses: r-lib/actions/pr-push@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
