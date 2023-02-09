@@ -12,7 +12,7 @@ on:
 name: Render-Report
 
 jobs:
-  Run-Updated-Report::
+  Run-Updated-Report:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
