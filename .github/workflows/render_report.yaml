@@ -26,7 +26,7 @@ jobs:
 
       - name: Install R Dependencies
         run: |
-          install.packages(c("tidyverse","rvest","rmarkdown","flexdashboard"))
+          install.packages(c("tidyverse","rvest","rmarkdown","flexdashboard","DT"))
         shell: Rscript {0}
 
       - name: Run Report

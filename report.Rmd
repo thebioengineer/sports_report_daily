@@ -14,8 +14,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 library(flexdashboard)
 library(tidyverse)
-library(plotly)
-library(DT)
+\library(DT)
 library(rvest)
 
 cbb_stats_url <- "https://www.espn.com/mens-college-basketball/stats/player"
