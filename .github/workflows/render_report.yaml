@@ -24,6 +24,8 @@ jobs:
         with:
           use-public-rspm: true
 
+      - uses: r-lib/actions/setup-pandoc@v2
+
       - name: Install R Dependencies
         run: |
           install.packages(c("tidyverse","rvest","rmarkdown","flexdashboard","DT"))
