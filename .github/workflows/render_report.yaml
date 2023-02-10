@@ -44,7 +44,7 @@ jobs:
           default_author: github_actions
           add: 'report.html'
           new_branch: 'ghpages'
-          push: "--set-upstream-to=origin/main"
+          push: "--set-upstream-to=origin/ghpages"
           tag_push: '--force'
           pull: '--rebase --autostash'
 
