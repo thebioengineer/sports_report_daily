@@ -38,6 +38,10 @@ cbb_stats_tables <- cbb_stats_html %>%
     Name, .after = RK
   )
 
+unique_pos <- unique(cbb_stats_tables$POS)
+
+color_scale_pos <- setNames(rainbow(length(unique_pos)), unique_pos)
+
 
 ```
 
@@ -67,7 +71,11 @@ cbb_stats_tables %>%
     x = NULL,
     y = "Points Per Game"
   ) + 
-  theme_bw()
+  theme_bw()+ 
+  scale_fill_manual(
+    values = color_scale_pos,
+    breaks = names(color_scale_pos)
+  )
 
 
 ```
@@ -93,7 +101,11 @@ cbb_stats_tables %>%
     x = NULL,
     y = "3 Pt Shooting %"
   ) + 
-  theme_bw()
+  theme_bw() + 
+  scale_fill_manual(
+    values = color_scale_pos,
+    breaks = names(color_scale_pos)
+  )
 
 
 ```
@@ -143,7 +155,11 @@ cbb_stats_tables %>%
     x = NULL,
     y = "Rebounds Per Game"
   ) + 
-  theme_bw()
+  theme_bw() + 
+  scale_fill_manual(
+    values = color_scale_pos,
+    breaks = names(color_scale_pos)
+  )
 
 
 ```
@@ -169,7 +185,11 @@ cbb_stats_tables %>%
     x = NULL,
     y = "Blocks Per Game"
   ) + 
-  theme_bw()
+  theme_bw() + 
+  scale_fill_manual(
+    values = color_scale_pos,
+    breaks = names(color_scale_pos)
+  )
 
 
 ```
