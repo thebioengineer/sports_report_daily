@@ -46,6 +46,6 @@ jobs:
           new_branch: 'ghpages'
           push: "--set-upstream"
           tag_push: '--force'
-          pull: '--rebase'
+          pull: '--rebase --autostash'
 
 
