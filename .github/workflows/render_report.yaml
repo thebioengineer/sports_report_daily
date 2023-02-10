@@ -44,6 +44,6 @@ jobs:
           default_author: github_actions
           add: 'report.html'
           new_branch: 'ghpages'
-          push: "-f -u"
+          push: "--set-upstream -f"
 
 
