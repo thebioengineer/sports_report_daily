@@ -38,14 +38,18 @@ jobs:
         run: |
           rmarkdown::render("report.Rmd")
         shell: Rscript {0}
+        
+      - name: setup git config
+        run: |
+          # setup the username and email
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
 
-      - uses: EndBug/add-and-commit@v9
-        with:
-          default_author: github_actions
-          add: 'report.html'
-          new_branch: 'ghpages'
-          push: "--set-upstream-to=origin/ghpages"
-          tag_push: '--force'
-          pull: '--rebase --autostash'
-
-
+      - name: Commit report to ghpages branch
+        run: |
+          git fetch
+          git checkout ghpages
+          git add report.html
+          git commit -m "update report"
+          git push -f -u origin ghpages
+      
