@@ -38,7 +38,7 @@ jobs:
         run: |
           rmarkdown::render("report.Rmd")
         shell: Rscript {0}
-        
+
       - name: setup git config
         run: |
           # setup the username and email
@@ -48,8 +48,10 @@ jobs:
       - name: Commit report to ghpages branch
         run: |
           git fetch
+          mv report.html report_renamed.html
           git checkout ghpages
+          mv report_renamed.html report.html
           git add report.html
           git commit -m "update report"
           git push -f -u origin ghpages
-      
+
